@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //首页tabs
+    <string-array name="tabs">
+        <item>@string/tab1</item>
+        <item>@string/tab2</item>
+        <item>@string/tab3</item>
+        <item>@string/tab4</item>
+        <item>@string/tab5</item>
+        <item>@string/tab6</item>
+    </string-array>
+
+</resources>

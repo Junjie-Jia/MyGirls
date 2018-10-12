@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MyGirls</string>
+
+    //首页tabs
+    <string name="tab1">妹子</string>
+    <string name="tab2">Android</string>
+    <string name="tab3">iOS</string>
+    <string name="tab4">前端</string>
+    <string name="tab5">休息视频</string>
+    <string name="tab6">拓展资源</string>
+
 </resources>
