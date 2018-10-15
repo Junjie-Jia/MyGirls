@@ -1,7 +1,10 @@
 package com.junjie.jia.io.mygirls.servic;
 
+import com.junjie.jia.io.mygirls.bean.CategoryBean;
 import com.junjie.jia.io.mygirls.bean.DataBean;
 import com.junjie.jia.io.mygirls.bean.TodayData;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -13,7 +16,7 @@ public interface GankService {
     Observable<TodayData> getTodayData();
 
     @GET("data/{category}/{number}/{page}")
-    Observable<DataBean> searchCategoryData(@Path("category") String category,
-                                            @Path("number") int number,
-                                            @Path("page") int page);
+    Observable<CategoryBean> searchCategoryData(@Path("category") String category,
+                                                @Path("number") int number,
+                                                @Path("page") int page);
 }

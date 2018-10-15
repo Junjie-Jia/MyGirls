@@ -29,6 +29,26 @@ public class DataBean {
     private String who;
     private List<String> images;
 
+    private int width;
+    private int height;
+
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public String get_id() {
         return _id;
     }

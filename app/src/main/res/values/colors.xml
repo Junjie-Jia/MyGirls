@@ -8,4 +8,6 @@
     <color name="holo_green_light">@android:color/holo_green_light</color>
     <color name="holo_purple">@android:color/holo_purple</color>
     <color name="holo_red_light">@android:color/holo_red_light</color>
+
+    <color name="recycler_view_background">#F5F5F5</color>
 </resources>

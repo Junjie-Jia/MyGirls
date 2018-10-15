@@ -1,26 +1,34 @@
 package com.junjie.jia.io.mygirls;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import com.junjie.jia.io.mygirls.bean.CategoryBean;
+import com.junjie.jia.io.mygirls.bean.DataBean;
+import com.junjie.jia.io.mygirls.net.GankServiceSingleton;
+
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class PageFragment extends Fragment {
     private String title;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-
-    private List<String> list = new ArrayList<>();
     private GirlPhotoAdapter girlPhotoAdapter;
 
     public static PageFragment newInstance(@NonNull String title) {
@@ -38,10 +46,6 @@ public class PageFragment extends Fragment {
         if (args != null) {
             title = args.getString("title");
         }
-
-        for (int i = 0; i < 3; i++) {
-            list.add(String.valueOf(i));
-        }
     }
 
     @Nullable
@@ -57,34 +61,63 @@ public class PageFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SystemClock.sleep(3000);
-                        int count = list.size();
-                        for (int i = 0; i < 3; i++) {
-                            list.add(String.valueOf(count + i));
-                        }
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                swipeRefreshLayout.setRefreshing(false);
-                                girlPhotoAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                }).start();
+                swipeRefreshLayout.setRefreshing(false);
             }
+
         });
 
-        //        Log.i("Fragment","" + swipeRefreshLayout.canChildScrollUp());
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        girlPhotoAdapter = new GirlPhotoAdapter(list);
+        final StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager );
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+            }
+        });
+        girlPhotoAdapter = new GirlPhotoAdapter();
         recyclerView.setAdapter(girlPhotoAdapter);
+
+        getData();
         return rootView;
     }
 
+    private void getData(){
+        GankServiceSingleton
+                .getGankService()
+                .searchCategoryData("福利",50,1)
+                .map(new Function<CategoryBean, List<DataBean>>() {
+                    @Override
+                    public List<DataBean> apply(CategoryBean categoryBean) throws Exception {
+                        return categoryBean.getResults();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<DataBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(List<DataBean> dataBeans) {
+                        girlPhotoAdapter.setList(dataBeans);
+                        girlPhotoAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+    }
 }
