@@ -66,16 +66,7 @@ public class PageFragment extends Fragment {
 
         });
 
-        final StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager );
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                staggeredGridLayoutManager.invalidateSpanAssignments();
-            }
-        });
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         girlPhotoAdapter = new GirlPhotoAdapter();
         recyclerView.setAdapter(girlPhotoAdapter);
 
@@ -86,7 +77,7 @@ public class PageFragment extends Fragment {
     private void getData(){
         GankServiceSingleton
                 .getGankService()
-                .searchCategoryData("福利",50,1)
+                .searchCategoryData("福利",20,1)
                 .map(new Function<CategoryBean, List<DataBean>>() {
                     @Override
                     public List<DataBean> apply(CategoryBean categoryBean) throws Exception {
