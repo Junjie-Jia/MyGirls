@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.junjie.jia.io.mygirls.bean.DataBean;
@@ -20,6 +22,10 @@ import java.util.List;
 public class GirlPhotoAdapter extends RecyclerView.Adapter<GirlPhotoAdapter.ViewHolder> {
 
     private List<DataBean> list;
+
+    private RequestOptions requestOptions = new RequestOptions()
+            .placeholder(R.drawable.photo_place_holder)
+            .diskCacheStrategy(DiskCacheStrategy.ALL);
 
     public void setList(List<DataBean> list) {
         this.list = list;
@@ -54,9 +60,15 @@ public class GirlPhotoAdapter extends RecyclerView.Adapter<GirlPhotoAdapter.View
 
 
         Glide.with(holder.imageView.getContext())
+                .applyDefaultRequestOptions(requestOptions)
                 .load(holder.dataBean.getUrl())
                 .into(holder.imageView);
 
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override

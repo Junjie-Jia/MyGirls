@@ -1,22 +1,27 @@
 package com.junjie.jia.io.mygirls;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.junjie.jia.io.mygirls.bean.CategoryBean;
 import com.junjie.jia.io.mygirls.bean.DataBean;
+import com.junjie.jia.io.mygirls.listener.OnLoadMoreListener;
 import com.junjie.jia.io.mygirls.net.GankServiceSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -30,6 +35,10 @@ public class PageFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private GirlPhotoAdapter girlPhotoAdapter;
+    private final int pageSize = 15;
+    private int pageIndex = 1;
+
+    private List<DataBean> list = new ArrayList<>();
 
     public static PageFragment newInstance(@NonNull String title) {
         PageFragment fragment = new PageFragment();
@@ -56,28 +65,40 @@ public class PageFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.recyclerView);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright,
-            R.color.holo_green_light, R.color.holo_purple, R.color.holo_red_light);
+                R.color.holo_green_light, R.color.holo_purple, R.color.holo_red_light);
         swipeRefreshLayout.setProgressViewOffset(true, 50, 100);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
+                pageIndex = 1;
+                list.clear();
+                getData();
             }
-
         });
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         girlPhotoAdapter = new GirlPhotoAdapter();
+        girlPhotoAdapter.setList(list);
         recyclerView.setAdapter(girlPhotoAdapter);
+        recyclerView.setItemAnimator(null);
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.addOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                pageIndex++;
+                getData();
+            }
+        });
 
         getData();
         return rootView;
     }
 
-    private void getData(){
+    private void getData() {
         GankServiceSingleton
                 .getGankService()
-                .searchCategoryData("福利",20,1)
+                .searchCategoryData("福利", pageSize, pageIndex)
                 .map(new Function<CategoryBean, List<DataBean>>() {
                     @Override
                     public List<DataBean> apply(CategoryBean categoryBean) throws Exception {
@@ -94,8 +115,13 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onNext(List<DataBean> dataBeans) {
-                        girlPhotoAdapter.setList(dataBeans);
-                        girlPhotoAdapter.notifyDataSetChanged();
+                        if (swipeRefreshLayout.isRefreshing()) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        Log.e("OkHttp:", "pageIndex == " + pageIndex);
+//                        preLoadImage(dataBeans);
+                        list.addAll(dataBeans);
+                        girlPhotoAdapter.notifyItemRangeChanged(0, list.size());
                     }
 
                     @Override
@@ -108,7 +134,22 @@ public class PageFragment extends Fragment {
 
                     }
                 });
+    }
 
-
+    private void preLoadImage(List<DataBean> dataBeans) {
+        if (pageIndex > 1) {
+            for (final DataBean dataBean : dataBeans) {
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(dataBean.getUrl())
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                dataBean.setWidth(resource.getWidth());
+                                dataBean.setHeight(resource.getHeight());
+                            }
+                        });
+            }
+        }
     }
 }
