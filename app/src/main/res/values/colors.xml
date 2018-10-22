@@ -10,4 +10,5 @@
     <color name="holo_red_light">@android:color/holo_red_light</color>
 
     <color name="recycler_view_background">#F5F5F5</color>
+    <color name="light_black">#212121</color>
 </resources>
