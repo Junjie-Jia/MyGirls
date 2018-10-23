@@ -6,6 +6,6 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface OneSentenceService {
-    @GET("v1?encode=realjson")
+    @GET("?c=f")
     Observable<OneSentenceBean> getOneSentence();
 }

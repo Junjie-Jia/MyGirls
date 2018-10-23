@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SplashStyle" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
+    <!--<style name="SplashStyle" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">-->
+    <style name="SplashStyle" parent="android:Theme.NoTitleBar.Fullscreen">
+
     </style>
 </resources>

@@ -1,54 +1,72 @@
 package com.junjie.jia.io.mygirls.bean;
 
-import com.google.gson.Gson;
-
 public class OneSentenceBean {
 
-    /**
-     * text : 没有谁的生活会一直完美，但无论什么时候，都要看着前方，满怀希望就会所向披靡。
-     * author : 巫哲
-     * source : 《撒野》
-     */
+    private int id;
+    private String hitokoto;
+    private String type;
+    private String from;
+    private String creator;
+    private String created_at;
 
-    private String text;
-    private String author;
-    private String source;
-
-    public static OneSentenceBean objectFromData(String str) {
-
-        return new Gson().fromJson(str, OneSentenceBean.class);
+    public int getId() {
+        return id;
     }
 
-    public String getText() {
-        return text;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getHitokoto() {
+        return hitokoto;
     }
 
-    public String getAuthor() {
-        return author;
+    public void setHitokoto(String hitokoto) {
+        this.hitokoto = hitokoto;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public String getType() {
+        return type;
     }
 
-    public String getSource() {
-        return source;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     @Override
     public String toString() {
         return "OneSentenceBean{" +
-                "text='" + text + '\'' +
-                ", author='" + author + '\'' +
-                ", source='" + source + '\'' +
-                '}';
+            "id=" + id +
+            ", hitokoto='" + hitokoto + '\'' +
+            ", type='" + type + '\'' +
+            ", from='" + from + '\'' +
+            ", creator='" + creator + '\'' +
+            ", created_at='" + created_at + '\'' +
+            '}';
     }
+
 }

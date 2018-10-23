@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -29,6 +30,8 @@ public class SplashActivity extends Activity {
 
     private TextView text;
     private TextView from;
+    private Disposable delayDispose;
+    private Disposable oneSentenceDispose;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,42 +41,52 @@ public class SplashActivity extends Activity {
         text = findViewById(R.id.text);
         from = findViewById(R.id.from);
         ImageView imageView = findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.splash).into(imageView);
+        Glide.with(this).load(R.drawable.photo1440_90).into(imageView);
 
-        new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.lwl12.com/hitokoto/")
-                .build()
-                .create(OneSentenceService.class)
-                .getOneSentence().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<OneSentenceBean>() {
-                    @Override
-                    public void accept(OneSentenceBean oneSentenceBean) throws Exception {
-                        Log.e("XXXX", oneSentenceBean.toString());
-                        text.setText(oneSentenceBean.getText());
-                        if(!TextUtils.isEmpty(oneSentenceBean.getSource())){
-                            from.setText("————  " + oneSentenceBean.getSource());
-                        }else {
-                            from.setVisibility(View.GONE);
-                        }
-
-                        delay();
+        oneSentenceDispose = new Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://v1.hitokoto.cn/")
+            .build()
+            .create(OneSentenceService.class)
+            .getOneSentence().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Consumer<OneSentenceBean>() {
+                @Override
+                public void accept(OneSentenceBean oneSentenceBean) throws Exception {
+                    Log.e("XXXX——", oneSentenceBean.toString());
+                    text.setText(oneSentenceBean.getHitokoto());
+                    if (!TextUtils.isEmpty(oneSentenceBean.getCreator())) {
+                        from.setText("──  " + oneSentenceBean.getCreator());
+                    } else {
+                        from.setVisibility(View.GONE);
                     }
-                });
+                    delay();
+                }
+            });
     }
 
-    private void delay(){
-        Observable.timer(3000, TimeUnit.MILLISECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        finish();
-                    }
-                });
+    private void delay() {
+        delayDispose = Observable.timer(3200, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Consumer<Long>() {
+                @Override
+                public void accept(Long aLong) throws Exception {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (oneSentenceDispose != null) {
+            oneSentenceDispose.dispose();
+        }
+        if (delayDispose != null) {
+            delayDispose.dispose();
+        }
     }
 }
