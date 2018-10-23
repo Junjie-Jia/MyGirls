@@ -17,6 +17,7 @@ import com.junjie.jia.io.mygirls.servic.OneSentenceService;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -43,17 +44,23 @@ public class SplashActivity extends Activity {
         ImageView imageView = findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.photo1440_90).into(imageView);
 
-        oneSentenceDispose = new Retrofit.Builder()
+        new Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://v1.hitokoto.cn/")
             .build()
             .create(OneSentenceService.class)
-            .getOneSentence().subscribeOn(Schedulers.io())
+            .getOneSentence()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Consumer<OneSentenceBean>() {
+            .subscribe(new Observer<OneSentenceBean>() {
                 @Override
-                public void accept(OneSentenceBean oneSentenceBean) throws Exception {
+                public void onSubscribe(Disposable d) {
+                    oneSentenceDispose = d;
+                }
+
+                @Override
+                public void onNext(OneSentenceBean oneSentenceBean) {
                     Log.e("XXXX——", oneSentenceBean.toString());
                     text.setText(oneSentenceBean.getHitokoto());
                     if (!TextUtils.isEmpty(oneSentenceBean.getCreator())) {
@@ -61,6 +68,17 @@ public class SplashActivity extends Activity {
                     } else {
                         from.setVisibility(View.GONE);
                     }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    text.setText(getResources().getString(R.string.one_sentence_default));
+                    from.setText("──  " + getResources().getString(R.string.one_sentence_default_author));
+                    delay();
+                }
+
+                @Override
+                public void onComplete() {
                     delay();
                 }
             });
