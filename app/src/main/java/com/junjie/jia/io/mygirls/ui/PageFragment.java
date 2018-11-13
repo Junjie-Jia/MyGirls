@@ -1,4 +1,4 @@
-package com.junjie.jia.io.mygirls;
+package com.junjie.jia.io.mygirls.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.junjie.jia.io.mygirls.GirlPhotoAdapter;
+import com.junjie.jia.io.mygirls.R;
 import com.junjie.jia.io.mygirls.bean.CategoryBean;
 import com.junjie.jia.io.mygirls.bean.DataBean;
 import com.junjie.jia.io.mygirls.listener.OnLoadMoreListener;

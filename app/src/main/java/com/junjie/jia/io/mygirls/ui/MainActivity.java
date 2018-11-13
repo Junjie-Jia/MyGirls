@@ -1,7 +1,9 @@
-package com.junjie.jia.io.mygirls;
+package com.junjie.jia.io.mygirls.ui;
 
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
+import com.junjie.jia.io.mygirls.R;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
