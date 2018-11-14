@@ -1,14 +1,15 @@
 package com.junjie.jia.io.mygirls.ui;
 
 import android.os.Bundle;
+
 import com.google.android.material.tabs.TabLayout;
 import com.junjie.jia.io.mygirls.R;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         tabs = getResources().getStringArray(R.array.tabs);
     }
 
-    private static class GankPageAdapter extends FragmentPagerAdapter {
+    private static final class GankPageAdapter extends FragmentPagerAdapter {
         GankPageAdapter(FragmentManager fm) {
             super(fm);
         }

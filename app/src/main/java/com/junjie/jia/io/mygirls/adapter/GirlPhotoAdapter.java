@@ -1,4 +1,4 @@
-package com.junjie.jia.io.mygirls;
+package com.junjie.jia.io.mygirls.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.junjie.jia.io.mygirls.App;
+import com.junjie.jia.io.mygirls.R;
 import com.junjie.jia.io.mygirls.bean.DataBean;
 import com.junjie.jia.io.mygirls.widget.RatioImageView;
 
@@ -23,7 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class GirlPhotoAdapter extends RecyclerView.Adapter<GirlPhotoAdapter.ViewHolder> {
+public class GirlPhotoAdapter extends GankAdapter<GirlPhotoAdapter.ViewHolder> {
 
     private List<DataBean> list;
 
@@ -97,7 +99,7 @@ public class GirlPhotoAdapter extends RecyclerView.Adapter<GirlPhotoAdapter.View
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static final class ViewHolder extends RecyclerView.ViewHolder {
         DataBean dataBean;
         final View mView;
         RatioImageView imageView;

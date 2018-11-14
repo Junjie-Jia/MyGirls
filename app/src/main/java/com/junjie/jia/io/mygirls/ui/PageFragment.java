@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.junjie.jia.io.mygirls.GirlPhotoAdapter;
 import com.junjie.jia.io.mygirls.R;
-import com.junjie.jia.io.mygirls.bean.DataBean;
+import com.junjie.jia.io.mygirls.adapter.GankAdapter;
+import com.junjie.jia.io.mygirls.adapter.GirlPhotoAdapter;
 import com.junjie.jia.io.mygirls.listener.OnLoadMoreListener;
 import com.junjie.jia.io.mygirls.mvp.GankPresenter;
 import com.junjie.jia.io.mygirls.mvp.IView;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +25,7 @@ public class PageFragment extends Fragment implements IView {
     private String title;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private GirlPhotoAdapter girlPhotoAdapter;
+    private GankAdapter gankAdapter;
 
     private GankPresenter gankPresenter;
 
@@ -61,7 +59,7 @@ public class PageFragment extends Fragment implements IView {
             initRecyclerView();
 
             gankPresenter = new GankPresenter(this);
-            girlPhotoAdapter.setList(gankPresenter.getList());
+            gankAdapter.setList(gankPresenter.getList());
             gankPresenter.loadData();
             return rootView;
         }
@@ -69,8 +67,8 @@ public class PageFragment extends Fragment implements IView {
 
     private void initRecyclerView() {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        girlPhotoAdapter = new GirlPhotoAdapter();
-        recyclerView.setAdapter(girlPhotoAdapter);
+        gankAdapter = createAdapter();
+        recyclerView.setAdapter(gankAdapter);
         recyclerView.setItemAnimator(null);
         recyclerView.setHasFixedSize(true);
 
@@ -80,6 +78,13 @@ public class PageFragment extends Fragment implements IView {
                 gankPresenter.loadMoreData();
             }
         });
+    }
+
+    protected GankAdapter createAdapter() {
+        if (title.equals(getResources().getString(R.string.tab1))) {
+            return new GirlPhotoAdapter();
+        }
+        return null;
     }
 
     private void findView(View rootView) {
@@ -105,7 +110,7 @@ public class PageFragment extends Fragment implements IView {
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
-        girlPhotoAdapter.notifyItemRangeChanged(0, girlPhotoAdapter.getList().size());
+        gankAdapter.notifyItemRangeChanged(0, gankAdapter.getList().size());
     }
 
     @Override
