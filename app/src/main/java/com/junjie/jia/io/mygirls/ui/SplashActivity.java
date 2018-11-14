@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.junjie.jia.io.mygirls.App;
 import com.junjie.jia.io.mygirls.R;
 import com.junjie.jia.io.mygirls.bean.OneSentenceBean;
-import com.junjie.jia.io.mygirls.servic.OneSentenceService;
+import com.junjie.jia.io.mygirls.service.OneSentenceService;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

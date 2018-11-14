@@ -8,6 +8,9 @@
     <string name="tab4">前端</string>
     <string name="tab5">休息视频</string>
     <string name="tab6">拓展资源</string>
+
+    <string name="tab1_category">福利</string>
+
     <string name="one_sentence_default">业精于勤荒于嬉，行成于思毁于随。</string>
     <string name="one_sentence_default_author">韩愈</string>
     

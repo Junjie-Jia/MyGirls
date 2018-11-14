@@ -1,10 +1,7 @@
-package com.junjie.jia.io.mygirls.servic;
+package com.junjie.jia.io.mygirls.service;
 
 import com.junjie.jia.io.mygirls.bean.CategoryBean;
-import com.junjie.jia.io.mygirls.bean.DataBean;
 import com.junjie.jia.io.mygirls.bean.TodayData;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

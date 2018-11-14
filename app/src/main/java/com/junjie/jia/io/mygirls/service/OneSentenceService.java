@@ -1,4 +1,4 @@
-package com.junjie.jia.io.mygirls.servic;
+package com.junjie.jia.io.mygirls.service;
 
 import com.junjie.jia.io.mygirls.bean.OneSentenceBean;
 

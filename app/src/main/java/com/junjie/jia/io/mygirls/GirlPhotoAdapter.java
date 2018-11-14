@@ -35,6 +35,10 @@ public class GirlPhotoAdapter extends RecyclerView.Adapter<GirlPhotoAdapter.View
         this.list = list;
     }
 
+    public List<DataBean> getList() {
+        return list;
+    }
+
     private Executor executor = Executors.newCachedThreadPool();
 
     @NonNull
