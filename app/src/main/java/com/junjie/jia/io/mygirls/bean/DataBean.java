@@ -2,6 +2,12 @@ package com.junjie.jia.io.mygirls.bean;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "gankDatas")
 public class DataBean {
 
 
@@ -17,8 +23,10 @@ public class DataBean {
      * used : true
      * who : PJ Tang
      */
-
+    @PrimaryKey
+    @NonNull
     private String _id;
+    @Ignore
     private String createdAt;
     private String desc;
     private String publishedAt;
@@ -27,11 +35,13 @@ public class DataBean {
     private String url;
     private boolean used;
     private String who;
+    @Ignore
     private List<String> images;
 
     private int width;
     private int height;
 
+    private long createMilliseconds;
 
     public int getWidth() {
         return width;
@@ -87,5 +97,53 @@ public class DataBean {
 
     public List<String> getImages() {
         return images;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public long getCreateMilliseconds() {
+        return createMilliseconds;
+    }
+
+    public void setCreateMilliseconds(long createMilliseconds) {
+        this.createMilliseconds = createMilliseconds;
     }
 }

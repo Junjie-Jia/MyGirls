@@ -12,5 +12,6 @@
     <string name="one_sentence_default_author">韩愈</string>
     
     <string name="one_sentence_creator">──  %1$s</string>
+    <string name="net_error">网络异常！！！</string>
 
 </resources>
