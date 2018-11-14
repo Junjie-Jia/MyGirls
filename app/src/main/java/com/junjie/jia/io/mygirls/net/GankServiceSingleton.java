@@ -10,7 +10,7 @@ public class GankServiceSingleton {
 
     private static class GankServiceHolder {
         private static final GankService gankService = new GankRetrofitFactory()
-                .create()
-                .create(GankService.class);
+            .createRetrofit()
+            .create(GankService.class);
     }
 }
