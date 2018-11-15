@@ -1,9 +1,18 @@
 package com.junjie.jia.io.mygirls.bean;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "sentences")
 public class OneSentenceBean {
 
+    @PrimaryKey
+    @NonNull
     private int id;
     private String hitokoto;
+    @Ignore
     private String type;
     private String from;
     private String creator;

@@ -1,6 +1,6 @@
 package com.junjie.jia.io.mygirls.net;
 
-import com.junjie.jia.io.mygirls.servic.GankService;
+import com.junjie.jia.io.mygirls.service.GankService;
 
 public class GankServiceSingleton {
 
@@ -10,7 +10,7 @@ public class GankServiceSingleton {
 
     private static class GankServiceHolder {
         private static final GankService gankService = new GankRetrofitFactory()
-                .create()
-                .create(GankService.class);
+            .createRetrofit()
+            .create(GankService.class);
     }
 }

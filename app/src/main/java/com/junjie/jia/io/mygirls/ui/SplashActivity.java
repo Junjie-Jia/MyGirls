@@ -1,4 +1,4 @@
-package com.junjie.jia.io.mygirls;
+package com.junjie.jia.io.mygirls.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.junjie.jia.io.mygirls.App;
+import com.junjie.jia.io.mygirls.R;
 import com.junjie.jia.io.mygirls.bean.OneSentenceBean;
-import com.junjie.jia.io.mygirls.servic.OneSentenceService;
+import com.junjie.jia.io.mygirls.service.OneSentenceService;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
@@ -74,6 +77,7 @@ public class SplashActivity extends Activity {
                         } else {
                             from.setVisibility(View.GONE);
                         }
+                        saveOneSentence(oneSentenceBean);
                         delay(COLD_BOOT_DELAY);
                     }
 
@@ -105,6 +109,7 @@ public class SplashActivity extends Activity {
         if (isHotBoot) {
             delay(HOT_BOOT_DELAY);
         }
+        testDataBase();
     }
 
     @Override
@@ -123,5 +128,34 @@ public class SplashActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         isHotBoot = false;
+    }
+
+    private void saveOneSentence(final OneSentenceBean oneSentenceBean) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((App) getApplication()).getDataBase()
+                        .sentencesDao()
+                        .insertOneSentence(oneSentenceBean);
+            }
+        }).start();
+    }
+
+    private void testDataBase() {
+        ((App) getApplication())
+                .getDataBase()
+                .sentencesDao()
+                .findAllSentences()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<OneSentenceBean>>() {
+                    @Override
+                    public void accept(List<OneSentenceBean> oneSentenceBeans) throws Exception {
+                        for (OneSentenceBean oneSentenceBean : oneSentenceBeans) {
+                            Log.i(TAG, ":: " + oneSentenceBean.toString());
+                        }
+                    }
+                });
+
     }
 }

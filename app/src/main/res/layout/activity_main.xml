@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -13,6 +13,8 @@
         android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="scrollable"
+        app:tabIndicatorHeight="2dp"
+        android:paddingBottom="1dp"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         app:tabTextColor="@android:color/darker_gray" />
