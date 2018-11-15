@@ -1,5 +1,6 @@
 package com.junjie.jia.io.mygirls.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junjie.jia.io.mygirls.R;
+import com.junjie.jia.io.mygirls.ui.WebViewActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +45,10 @@ public class GankTextAdapter extends GankAdapter<GankTextAdapter.ViewHolder> {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext()," " + getAdapterPosition(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), " " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    view.getContext().startActivity(new Intent(
+                        view.getContext(), WebViewActivity.class
+                    ));
                 }
             });
         }
