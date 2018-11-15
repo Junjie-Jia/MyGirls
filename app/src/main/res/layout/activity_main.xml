@@ -13,8 +13,8 @@
         android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="scrollable"
-        app:tabIndicatorHeight="3dp"
-        android:paddingBottom="5dp"
+        app:tabIndicatorHeight="2dp"
+        android:paddingBottom="1dp"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         app:tabTextColor="@android:color/darker_gray" />

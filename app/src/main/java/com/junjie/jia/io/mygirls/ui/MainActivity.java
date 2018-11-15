@@ -1,10 +1,15 @@
 package com.junjie.jia.io.mygirls.ui;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.junjie.jia.io.mygirls.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,8 +19,10 @@ import androidx.viewpager.widget.ViewPager;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
-    private static String[] tabs;
     private TabLayout tabLayout;
+
+    private static String[] tabs;
+    private static final List<PageFragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +32,12 @@ public class MainActivity extends AppCompatActivity {
         initTabResource();
         findView();
 
+        for (String tab : tabs) {
+            fragmentList.add(PageFragment.newInstance(tab));
+        }
+
         viewPager.setAdapter(new GankPageAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(tabs.length);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -45,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return PageFragment.newInstance(tabs[position]);
+            return fragmentList.get(position);
         }
 
         @Override
@@ -56,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return tabs[position];
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+
         }
     }
 }

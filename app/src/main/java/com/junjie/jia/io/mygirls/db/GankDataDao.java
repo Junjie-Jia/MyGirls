@@ -14,7 +14,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
- * Author : Victor Jia user
+ * Author : Victor Jia
  * Date  :  2018/11/14.
  */
 

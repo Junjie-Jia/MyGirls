@@ -1,6 +1,7 @@
 package com.junjie.jia.io.mygirls.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.junjie.jia.io.mygirls.R;
 import com.junjie.jia.io.mygirls.adapter.GankAdapter;
+import com.junjie.jia.io.mygirls.adapter.GankTextAdapter;
 import com.junjie.jia.io.mygirls.adapter.GirlPhotoAdapter;
 import com.junjie.jia.io.mygirls.listener.OnLoadMoreListener;
 import com.junjie.jia.io.mygirls.mvp.GankPresenter;
@@ -16,6 +18,7 @@ import com.junjie.jia.io.mygirls.mvp.IView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -43,6 +46,7 @@ public class PageFragment extends Fragment implements IView {
         Bundle args = getArguments();
         if (args != null) {
             title = args.getString("title");
+            Log.i(TAG, "title : " + title);
         }
     }
 
@@ -51,22 +55,18 @@ public class PageFragment extends Fragment implements IView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
 
-        if (!title.equals("妹子")) {
-            return rootView;
-        } else {
-            findView(rootView);
-            initSwipeRefreshLayout();
-            initRecyclerView();
+        findView(rootView);
+        initSwipeRefreshLayout();
+        initRecyclerView();
 
-            gankPresenter = new GankPresenter(this);
-            gankAdapter.setList(gankPresenter.getList());
-            gankPresenter.loadData();
-            return rootView;
-        }
+        gankPresenter = new GankPresenter(this);
+        gankAdapter.setList(gankPresenter.getList());
+        gankPresenter.loadData();
+        return rootView;
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(createLayoutManager());
         gankAdapter = createAdapter();
         recyclerView.setAdapter(gankAdapter);
         recyclerView.setItemAnimator(null);
@@ -80,11 +80,22 @@ public class PageFragment extends Fragment implements IView {
         });
     }
 
-    protected GankAdapter createAdapter() {
-        if (title.equals(getResources().getString(R.string.tab1))) {
+    private RecyclerView.LayoutManager createLayoutManager() {
+        if (isPhotoFragment()) {
+            return new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        }
+        return new LinearLayoutManager(getContext());
+    }
+
+    private GankAdapter createAdapter() {
+        if (isPhotoFragment()) {
             return new GirlPhotoAdapter();
         }
-        return null;
+        return new GankTextAdapter();
+    }
+
+    private boolean isPhotoFragment() {
+        return title.equals(getResources().getString(R.string.tab1));
     }
 
     private void findView(View rootView) {
@@ -94,8 +105,8 @@ public class PageFragment extends Fragment implements IView {
 
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright,
-                R.color.holo_green_light, R.color.holo_purple, R.color.holo_red_light);
-        swipeRefreshLayout.setProgressViewOffset(true, 50, 100);
+            R.color.holo_green_light, R.color.holo_purple, R.color.holo_red_light);
+        swipeRefreshLayout.setProgressViewOffset(true, 50, 120);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -103,7 +114,6 @@ public class PageFragment extends Fragment implements IView {
             }
         });
     }
-
 
     @Override
     public void showData() {
@@ -123,7 +133,7 @@ public class PageFragment extends Fragment implements IView {
 
     @Override
     public String getCategory() {
-        if (title.equals(getResources().getString(R.string.tab1))) {
+        if (isPhotoFragment()) {
             return getResources().getString(R.string.tab1_category);
         } else {
             return title;
