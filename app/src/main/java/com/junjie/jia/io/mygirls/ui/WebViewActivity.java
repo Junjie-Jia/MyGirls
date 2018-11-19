@@ -29,21 +29,24 @@ public class WebViewActivity extends SlidingActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
         return super.onSupportNavigateUp();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.web_activity_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_settings:
-                Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                Toast.makeText(this,"home!!!",Toast.LENGTH_SHORT).show();
                 break;
         }
 

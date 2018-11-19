@@ -131,7 +131,7 @@ public class SlidingLayout extends FrameLayout {
                 isConsumed = false;
                 mTouchDownX = mLastTouchX = mLastTouchY = 0;
                 // 根据手指释放时的位置决定回弹还是关闭
-                if (-getScrollX() < getWidth() / 2) {
+                if (-getScrollX() < getWidth() / 8) {
                     scrollBack();
                 } else {
                     scrollClose();
