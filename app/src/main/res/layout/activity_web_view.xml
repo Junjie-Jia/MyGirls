@@ -25,21 +25,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.core.widget.NestedScrollView
+    <com.junjie.jia.io.mygirls.widget.NestedScrollWebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="800dp"
-                android:background="@color/colorAccent"
-                android:text="WebView"
-                android:textSize="20dp" />
-
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

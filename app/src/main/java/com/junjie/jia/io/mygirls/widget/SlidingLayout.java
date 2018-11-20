@@ -154,7 +154,7 @@ public class SlidingLayout extends FrameLayout {
     /**
      * 滑动关闭
      */
-    private void scrollClose() {
+    public void scrollClose() {
         int startX = getScrollX();
         int dx = -getScrollX() - getWidth();
         mScroller.startScroll(startX, 0, dx, 0, 300);

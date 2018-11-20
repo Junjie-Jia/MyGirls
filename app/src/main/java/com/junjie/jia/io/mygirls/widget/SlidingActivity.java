@@ -6,16 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class SlidingActivity extends AppCompatActivity {
 
+    private SlidingLayout rootView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (enableSliding()) {
-            SlidingLayout rootView = new SlidingLayout(this);
+            rootView = new SlidingLayout(this);
             rootView.bindActivity(this);
         }
     }
 
     protected boolean enableSliding() {
         return true;
+    }
+
+    protected void scrollFinish(){
+        rootView.scrollClose();
     }
 }

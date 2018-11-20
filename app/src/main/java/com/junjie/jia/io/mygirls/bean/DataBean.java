@@ -146,4 +146,23 @@ public class DataBean {
     public void setCreateMilliseconds(long createMilliseconds) {
         this.createMilliseconds = createMilliseconds;
     }
+
+    @Override
+    public String toString() {
+        return "DataBean{" +
+                "_id='" + _id + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", desc='" + desc + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                ", source='" + source + '\'' +
+                ", type='" + type + '\'' +
+                ", url='" + url + '\'' +
+                ", used=" + used +
+                ", who='" + who + '\'' +
+                ", images=" + images +
+                ", width=" + width +
+                ", height=" + height +
+                ", createMilliseconds=" + createMilliseconds +
+                '}';
+    }
 }
