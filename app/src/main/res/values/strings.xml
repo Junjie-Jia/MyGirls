@@ -17,4 +17,8 @@
     <string name="one_sentence_creator">──  %1$s</string>
     <string name="net_error">网络异常！！！</string>
 
+    <string name="share">分享</string>
+    <string name="copy_url">复制链接</string>
+    <string name="open_in_browser">浏览器打开</string>
+
 </resources>

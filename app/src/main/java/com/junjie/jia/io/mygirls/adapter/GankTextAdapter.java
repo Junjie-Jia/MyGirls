@@ -1,12 +1,13 @@
 package com.junjie.jia.io.mygirls.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.junjie.jia.io.mygirls.R;
+import com.junjie.jia.io.mygirls.ui.WebViewActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * Date  :  2018/11/15.
  */
 public class GankTextAdapter extends GankAdapter<GankTextAdapter.ViewHolder> {
+    private static final String TAG = GankTextAdapter.class.getSimpleName();
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,7 +35,7 @@ public class GankTextAdapter extends GankAdapter<GankTextAdapter.ViewHolder> {
         return list == null ? 0 : list.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textView;
 
@@ -43,7 +46,9 @@ public class GankTextAdapter extends GankAdapter<GankTextAdapter.ViewHolder> {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext()," " + getAdapterPosition(),Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, ":    " + list.get(getAdapterPosition()).toString());
+                    WebViewActivity.startWebViewActivity(view.getContext(), list.get(getAdapterPosition()).getUrl(),
+                            list.get(getAdapterPosition()).getDesc());
                 }
             });
         }
